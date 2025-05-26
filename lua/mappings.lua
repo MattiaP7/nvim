@@ -21,6 +21,8 @@ mak("v", "<A-Down>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 
 map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
+map("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, silent = true })
+
 map("n", "<leader>cg", function()
   require("neogen").generate()
 end, { desc = "Generate docs with neogen" })
