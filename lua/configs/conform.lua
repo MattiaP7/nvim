@@ -4,6 +4,8 @@ local options = {
     c = { "clang-format" },
     cpp = { "clang-format" },
     python = { "black" },
+    javascript = { "prettier" },
+    typescript = { "prettier" },
   },
   format_on_save = {
     -- These options will be passed to conform.format()

@@ -13,6 +13,36 @@ return {
     end,
   },
 
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function()
+      local cmp = require "cmp"
+      local conf = require "nvchad.configs.cmp"
+
+      local mymappings = {
+        ["<Up>"] = cmp.mapping.select_prev_item(),
+        ["<Down>"] = cmp.mapping.select_next_item(),
+      }
+      conf.mapping = vim.tbl_deep_extend("force", conf.mapping, mymappings)
+      return conf
+    end,
+  },
+
+  {
+    "barrett-ruth/import-cost.nvim",
+    build = "npm.cmd install --legacy-peer-deps",
+    ft = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+    config = function()
+      require("import-cost").setup {
+        format = {
+          enabled = true,
+          text = " ≈ %s",
+          highlight = "Comment",
+        },
+      }
+    end,
+  },
+
   -- suggerimenti intelligenti
   --{ import = "nvchad.blink.lazyspec" },
 
@@ -36,6 +66,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
+      auto_install = true,
       ensure_installed = {
         "vim",
         "lua",

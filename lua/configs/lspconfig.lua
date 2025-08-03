@@ -12,7 +12,7 @@ local servers = {
   "emmet_ls",
   "clangd",
   "pylsp",
-  "pyright",
+  -- "pyright",
   "zls",
 }
 
@@ -32,8 +32,11 @@ lspconfig.pylsp.setup {
   },
 }
 
-lspconfig.clangd.setup {
-  init_options = {
-    fallbackFlags = { "--std=c++20" },
-  },
-}
+-- lspconfig.clangd.setup {
+--   cmd = { "clangd" },
+--   filetypes = { "c", "cpp", "objc", "objcpp" },
+--   root_dir = require("lspconfig.util").root_pattern("compile_commands.json", ".git"),
+--   init_options = {
+--     fallbackFlags = { "clangd", "--std=c++20" },
+--   },
+-- }

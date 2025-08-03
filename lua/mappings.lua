@@ -19,10 +19,25 @@ mak("v", "<A-Up>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 mak("n", "<A-Down>", ":m+1<CR>==", { noremap = true, silent = true })
 mak("v", "<A-Down>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 
-map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+-- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
 map("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, silent = true })
 
-map("n", "<leader>cg", function()
+map("n", "<leader>ng", function()
   require("neogen").generate()
 end, { desc = "Generate docs with neogen" })
+
+map("n", "<leader>fs", function()
+  local search = vim.fn.input "Parola da cercare: "
+  local replace = vim.fn.input "Sostituire con: "
+  local cmd = string.format("%%s/%s/%s/g", search, replace)
+  vim.cmd(cmd)
+end, { desc = "Sostituisci parola interattiva" })
+
+-- map("n", "<F5>", function()
+--   vim.cmd "w"
+--   local file = vim.fn.expand "%"
+--   local output = vim.fn.expand "%:r"
+--   local cmd = string.format("!g++ -Wall -Werror -std=c++23 -O2 %s && ./%s", file, output, output)
+--   vim.cmd(cmd)
+-- end, { desc = "Compila ed esegui il file C++" })

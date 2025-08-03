@@ -25,7 +25,7 @@ mason_lspconfig.setup {
     "emmet_ls", -- Emmet
     "clangd", -- C/C++
     "pylsp", -- Python LSP
-    "pyright", -- Python alternative
+    -- "pyright",-- Python alternative
     "zls", -- Zig
   },
 }
