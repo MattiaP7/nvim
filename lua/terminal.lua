@@ -1,5 +1,6 @@
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>")
 
+
 local state = {
 	floating = {
 		buf = -1,
@@ -7,8 +8,10 @@ local state = {
 	}
 }
 
+
 local function create_floating_window(opts)
 	opts = opts or {}
+
 	local width = opts.width or math.floor(vim.o.columns * 0.8)
 	local height = opts.height or math.floor(vim.o.lines * 0.8)
 
@@ -18,6 +21,7 @@ local function create_floating_window(opts)
 
 	-- Create a buffer
 	local buf = nil
+
 	if vim.api.nvim_buf_is_valid(opts.buf) then
 		buf = opts.buf
 	else
@@ -44,6 +48,7 @@ end
 local toggle_terminal = function()
 	if not vim.api.nvim_win_is_valid(state.floating.win) then
 		state.floating = create_floating_window { buf = state.floating.buf }
+
 		if vim.bo[state.floating.buf].buftype ~= "terminal" then
 			vim.cmd.terminal()
 		end
@@ -52,7 +57,6 @@ local toggle_terminal = function()
 	end
 end
 
--- Example usage:
--- Create a floating window with default dimensions
+
 vim.api.nvim_create_user_command("Floaterminal", toggle_terminal, {})
 vim.keymap.set({ 'n', 't' }, '<leader>h', toggle_terminal, { desc = 'Toggle terminal' })

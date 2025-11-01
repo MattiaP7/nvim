@@ -2,7 +2,15 @@ return {
 	{
 		"mason-org/mason.nvim",
 		config = function()
-			require("mason").setup()
+			require("mason").setup({
+				ui = {
+					icons = {
+						package_pending = " ",
+						package_installed = " ",
+						package_uninstalled = " ",
+					},
+				},
+			})
 		end,
 	},
 	{
@@ -35,7 +43,7 @@ return {
 					focusable = false,
 					style = "minimal",
 					border = "rounded",
-					source = "always",
+					source = true,
 					header = "",
 					prefix = "",
 				},
@@ -73,7 +81,24 @@ return {
 				vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, opts)
 			end
 
-			local capabilities = require('cmp_nvim_lsp').default_capabilities()
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities.textDocument.completion.completionItem = {
+				documentationFormat = { "markdown", "plaintext" },
+				snippetSupport = true,
+				preselectSupport = true,
+				insertReplaceSupport = true,
+				labelDetailsSupport = true,
+				deprecatedSupport = true,
+				commitCharactersSupport = true,
+				tagSupport = { valueSet = { 1 } },
+				resolveSupport = {
+					properties = {
+						"documentation",
+						"detail",
+						"additionalTextEdits",
+					},
+				},
+			}
 			local clangd_capabilities = vim.deepcopy(capabilities)
 			clangd_capabilities["offsetEncoding"] = "utf-8"
 
@@ -89,7 +114,17 @@ return {
 					}
 				},
 				clangd = {
-
+					cmd = {
+						"clangd",
+						"--background-index",
+						"--function-arg-placeholders=0",
+						"-j=12",
+						"--clang-tidy",
+					},
+					capabilities = clangd_capabilities,
+					init_options = {
+						documentFormatting = true,
+					},
 				}
 			}
 

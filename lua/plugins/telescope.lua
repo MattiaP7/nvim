@@ -1,16 +1,17 @@
 return {
 	{
-		'nvim-telescope/telescope.nvim', 
+		'nvim-telescope/telescope.nvim',
 		tag = '0.1.8',
 		dependencies = { 'nvim-lua/plenary.nvim' },
 		config = function()
-				require('telescope').setup({
-					defaults = {
-						mappings = {
-							i = {
-								["<C-j>"] = "move_selection_next",
-								["<C-k>"] = "move_selection_previous",
-							},
+			require('telescope').setup({
+				defaults = {
+					prompt_prefix = "   ",
+					mappings = {
+						i = {
+							["<C-j>"] = "move_selection_next",
+							["<C-k>"] = "move_selection_previous",
+						},
 					},
 					layout_config = {
 						horizontal = {
@@ -25,8 +26,8 @@ return {
 						override_file_sorter = true,
 					}
 				}
-				})
-			end,
+			})
+		end,
 	},
 	{
 		'https://github.com/andrew-george/telescope-themes',

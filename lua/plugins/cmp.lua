@@ -4,7 +4,15 @@ return {
 		event = "VeryLazy",
 		config = function()
 			require("lsp_signature").setup({
-				hint_enable = false
+				hint_enable = false,
+				handler_opts = {
+					border = "rounded"
+				},
+				toggle_key = "<M-x>",
+				floating_window = true,
+				floating_window_above_cur_line = true,
+				fix_pos = true,
+				always_trigger = true
 			})
 		end
 	},
@@ -93,6 +101,14 @@ return {
 								buffer = "[Buf]",
 								path = "[Path]",
 							})[entry.source.name]
+
+							vim_item.dup = ({
+								nvim_lsp = 0,
+								luasnip = 0,
+								buffer = 0,
+								path = 0
+							})[entry.source.name] or 0
+
 							return vim_item
 						end,
 					}),
@@ -110,29 +126,6 @@ return {
 						max_height = 20,
 					}),
 				},
-
-				-- 	experimental = {
-				-- 		ghost_text = {
-				-- 			hl_group = "Comment",
-				-- 		},
-				-- 	},
-				-- })
-				--
-				-- -- Setup per cmdline
-				-- cmp.setup.cmdline({ "/", "?" }, {
-				-- 	mapping = cmp.mapping.preset.cmdline(),
-				-- 	sources = {
-				-- 		{ name = "buffer" }
-				-- 	}
-				-- })
-				--
-				-- cmp.setup.cmdline(":", {
-				-- 	mapping = cmp.mapping.preset.cmdline(),
-				-- 	sources = cmp.config.sources({
-				-- 		{ name = "path" }
-				-- 	}, {
-				-- 		{ name = "cmdline" }
-				-- 	})
 			})
 		end,
 	},

@@ -1,12 +1,12 @@
 return {
-  "nvim-tree/nvim-tree.lua",
-  version = "*",
-  lazy = false,
-  dependencies = {
-    "nvim-tree/nvim-web-devicons",
-  },
-  config = function()
-    require("nvim-tree").setup({
+	"nvim-tree/nvim-tree.lua",
+	version = "*",
+	lazy = false,
+	dependencies = {
+		"nvim-tree/nvim-web-devicons",
+	},
+	config = function()
+		require("nvim-tree").setup({
 			view = {
 				width = 30,
 				side = "left",
@@ -21,11 +21,20 @@ return {
 						git = true,
 					},
 					glyphs = {
+						default = "󰈚",
+						folder = {
+							default = "",
+							empty = "",
+							empty_open = "",
+							open = "",
+							symlink = "",
+						},
 						git = {
 							unstaged = "✗",
 							staged = "✓",
 							untracked = "★",
-						},	
+							unmerged = ""
+						},
 					},
 				}
 			},
@@ -33,5 +42,5 @@ return {
 				dotfiles = false,
 			},
 		})
-  end,
+	end,
 }
