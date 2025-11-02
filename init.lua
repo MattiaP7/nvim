@@ -25,4 +25,4 @@ require("lazy").setup({
 })
 
 require("current-theme")
-require("terminal")
+-- require("terminal")
