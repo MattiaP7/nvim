@@ -25,7 +25,7 @@ return {
 		},
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "clangd" },
+				ensure_installed = { "lua_ls", "clangd", "pyright" },
 			})
 		end,
 	},
@@ -125,7 +125,20 @@ return {
 					init_options = {
 						documentFormatting = true,
 					},
-				}
+				},
+
+				pyright = {
+					root_markers = { ".git", "pyproject.toml", "setup.py", "requirements.txt", "." },
+					settings = {
+						python = {
+							analysis = {
+								autoSearchPaths = true,
+								useLibraryCodeForTypes = true,
+								diagnosticMode = "openFilesOnly",
+							},
+						},
+					},
+				},
 			}
 
 			-- Configura tutti i server

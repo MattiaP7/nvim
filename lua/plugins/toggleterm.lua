@@ -19,6 +19,7 @@ return {
 
 			-- Configurazione per il terminale flottante (quello principale)
 			float_opts = {
+				shell = "pwsh",
 				border = 'rounded',
 				winblend = 0, -- Rende la finestra opaca (0-100)
 				highlights = {

@@ -35,15 +35,13 @@ mak("v", "<A-Down>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 -- Commenti
 map("n", "<leader>/", "gcc", { desc = " Toggle comment", remap = true })
 map("v", "<leader>/", "gc", { desc = " Toggle comment", remap = true })
--- LSP
 
+-- LSP
 vim.api.nvim_create_autocmd("BufWritePre", {
 	callback = function()
 		vim.lsp.buf.format({ async = false })
 	end,
 })
-
--- LSP mappings
 map('n', '<leader>lf', function()
 	vim.lsp.buf.format({ async = true })
 end, { desc = " Format document" })
