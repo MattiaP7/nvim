@@ -1,6 +1,8 @@
 local map = vim.keymap.set
 local mak = vim.api.nvim_set_keymap
 
+
+
 -- nvim tree
 map('n', '<C-n>', ':NvimTreeToggle<CR>', { desc = " file explorer" })
 
@@ -38,12 +40,12 @@ map("v", "<leader>/", "gc", { desc = " Toggle comment", remap = true })
 
 -- LSP
 vim.api.nvim_create_autocmd("BufWritePre", {
-	callback = function()
-		vim.lsp.buf.format({ async = false })
-	end,
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
 })
 map('n', '<leader>lf', function()
-	vim.lsp.buf.format({ async = true })
+  vim.lsp.buf.format({ async = true })
 end, { desc = " Format document" })
 map('n', 'gd', vim.lsp.buf.definition, { desc = "󰌹 Vai alla definizione" })
 map('n', 'gD', vim.lsp.buf.implementation, { desc = "󰌹 Vai alla implementazione" })

@@ -6,7 +6,10 @@ o.relativenumber = true
 o.signcolumn = 'yes'
 
 o.cursorline = true
-o.wrap = false
+o.cursorlineopt = "both"
+o.wrap = true
+o.linebreak = true
+o.breakindent = true
 
 o.tabstop = 2
 o.softtabstop = 2

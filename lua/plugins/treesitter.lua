@@ -18,8 +18,6 @@ return {
         "typescript",
         "tsx",
         "python",
-        "markdown",
-        "markdown_inline"
       },
       ignore_install = {},
       modules = {},
