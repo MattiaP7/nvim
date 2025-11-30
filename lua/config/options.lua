@@ -3,7 +3,7 @@ local o = vim.o
 
 o.number = true
 o.relativenumber = true
-o.signcolumn = 'yes'
+o.signcolumn = "yes"
 
 o.cursorline = true
 o.cursorlineopt = "both"
@@ -25,6 +25,5 @@ o.completeopt = "menuone,noselect"
 o.updatetime = 300
 o.signcolumn = "yes"
 o.ttimeoutlen = 0
-
 
 g.mapleader = " "

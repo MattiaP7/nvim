@@ -1,11 +1,26 @@
 return {
-	{ "https://github.com/vague2k/vague.nvim" },
-	{ "https://github.com/sainnhe/sonokai" },
-	{ "https://github.com/folke/tokyonight.nvim" },
-	{ "https://github.com/navarasu/onedark.nvim" },
-	{ "https://github.com/rose-pine/neovim" },
-	{ "https://github.com/catppuccin/nvim" },
-	{ "https://github.com/ficd0/ashen.nvim" },
-	{ "https://github.com/gmr458/vscode_modern_theme.nvim" },
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		lazy = false,
+		priority = 1000,
+	},
 
+	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 900,
+	},
+
+	{
+		"navarasu/onedark.nvim",
+		lazy = false,
+		priority = 800,
+	},
+
+	{ "sainnhe/sonokai", lazy = true, event = "VeryLazy" },
+	{ "vague2k/vague.nvim", lazy = true, event = "VeryLazy" },
+	{ "rose-pine/neovim", lazy = true, event = "VeryLazy" },
+	{ "ficd0/ashen.nvim", lazy = true, event = "VeryLazy" },
+	{ "gmr458/vscode_modern_theme.nvim", lazy = true, event = "VeryLazy" },
 }
