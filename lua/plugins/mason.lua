@@ -26,6 +26,7 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
+					-- insert here your lsp to install
 					"lua_ls",
 					"clangd",
 					"pylsp",
@@ -44,7 +45,7 @@ return {
 		config = function()
 			require("mason-tool-installer").setup({
 				ensure_installed = {
-					-- FORMATTER
+					-- anything but lsp
 					"stylua",
 					"prettier",
 					"black",

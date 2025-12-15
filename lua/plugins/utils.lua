@@ -1,22 +1,26 @@
 return {
+
 	{
-		"https://github.com/folke/which-key.nvim",
+		"folke/which-key.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = {
+			preset = "modern", -- 'classic' | 'modern' | 'helix'
+			delay = 500,
+			plugins = {
+				spelling = {
+					enabled = true,
+					suggestions = 20,
+				},
+			},
+		},
 		keys = {
-			"<leader>?",
-			config = function()
-				local wk = require("which-key")
-				wk.show({ global = false })
-				wk.setup({
-					preset = "classic",
-					delay = 500,
-					plugins = {
-						spelling = { enabled = true, suggestions = 20 },
-					},
-				})
-			end,
-			desc = "Local keymaps",
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Local keymaps",
+			},
 		},
 	},
 	{

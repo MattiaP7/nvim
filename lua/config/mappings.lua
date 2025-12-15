@@ -5,7 +5,7 @@ local mak = vim.api.nvim_set_keymap
 map("n", "<C-n>", ":NvimTreeToggle<CR>", { desc = " file explorer" })
 
 -- Keymaps per Telescope
-map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "󰱼 Trova file" })
+-- map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "󰱼 Trova file" })
 map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "󰊄 Grep" })
 map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "󰈙 Buffer" })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "󰋖 Help" })
@@ -16,7 +16,7 @@ map("n", "<leader>th", "<cmd>Telescope themes<CR>", { noremap = true, silent = t
 map("n", "<leader>o", ":update<CR>:source %<CR>", { desc = " Ricarica config" })
 map("n", "<leader>w", ":w<CR>", { desc = " Salva file" })
 map("n", "<leader>q", ":q<CR>", { desc = " Chiudi buffer" })
-map("n", "<leader>Q", ":qa!<CR>", { desc = " Esci forzato" })
+map("n", "<leader>Q", ":qa!<CR>", { desc = "Esci forzato" })
 
 -- Salvataggio con Ctrl+S
 map({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr>", { desc = " Salva file" })
