@@ -10,6 +10,7 @@ o.cursorlineopt = "both"
 o.wrap = true
 o.linebreak = true
 o.breakindent = true
+o.timeoutlen = 300
 
 o.tabstop = 2
 o.softtabstop = 2

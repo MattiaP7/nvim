@@ -5,58 +5,44 @@ return {
 		local toggleterm = require("toggleterm")
 
 		toggleterm.setup({
-			size = 20, -- Altezza predefinita per i terminali a scomparsa (split)
-			open_mapping = [[<c-\>]], -- La mappatura predefinita per il toggle (non è obbligatoria)
-			direction = "float", -- Direzione predefinita per il terminale principale
-			terminal_mappings = true, -- Permette l'uso di <c-\> per uscire dalla modalità terminale (t-mode)
-			shade_terminals = true, -- Scurisce un po' lo sfondo del terminale
-			start_in_insert = true, -- Inizia in modalità inserimento
-			hide_numbers = true, -- Nasconde i numeri di riga nel terminale
-			close_on_exit = true, -- Chiude la finestra se il comando termina (es. 'ls' e poi chiude)
-
-			-- Configurazione per il terminale flottante (quello principale)
+			size = 20,
+			-- Mappatura universale predefinita (Ctrl + \)
+			open_mapping = [[<c-\>]],
+			direction = "float",
+			shade_terminals = true,
+			start_in_insert = true,
+			hide_numbers = true,
+			close_on_exit = true,
 			float_opts = {
-				shell = "pwsh",
 				border = "rounded",
-				winblend = 0, -- Rende la finestra opaca (0-100)
+				winblend = 0,
 				highlights = {
 					border = "Normal",
 					background = "Normal",
 				},
 			},
-
-			{
-				name = "main_float_terminal",
-				direction = "float", -- 'vertical' | 'float' | 'tab' | 'horizontal'
-				hidden = true,
-			},
 		})
 
-		-- Funzione helper per il toggle dei terminali specifici
-		_G.set_terminal_keymaps = function()
-			-- Mappa per uscire dalla modalità terminale e tornare alla modalità normale (come facevi tu)
-			-- Questo è CRUCIALE per non distruggere la sessione!
-			vim.api.nvim_buf_set_keymap(0, "t", "<esc><esc>", [[<C-\><C-n>]], {
-				noremap = true,
-				silent = true,
-				desc = "Passa alla Modalita' Normale",
-			})
+		-- Funzione per gestire i tasti QUANDO IL TERMINALE È APERTO
+		function _G.set_terminal_keymaps()
+			local opts = { buffer = 0 }
 
-			vim.api.nvim_buf_set_keymap(0, "t", "<leader>h", [[<C-\><C-n><cmd>ToggleTerm<CR>]], {
-				noremap = true,
-				silent = true,
-				desc = "Chiudi Terminale (Toggle)",
-			})
+			-- Esci dalla modalità "scrittura" ed entra in modalità "normale" di Neovim
+			-- Usiamo due volte Esc per non interferire con i singoli Esc dei programmi shell
+			vim.keymap.set("t", "<esc><esc>", [[<C-\><C-n>]], opts)
 
-			-- Mappa alternativa, spesso più comoda per chiudere subito
-			vim.api.nvim_buf_set_keymap(0, "t", "<C-c>", [[<C-\><C-n>]], {
-				noremap = true,
-				silent = true,
-				desc = "Esci dalla modalita' terminale",
-			})
+			-- CHIUDERE il terminale mentre sei in modalità inserimento
+			-- Ho cambiato <leader>h in <C-h> (Ctrl+h) per evitare che lo "spazio" blocchi la scrittura
+			vim.keymap.set("t", "<C-h>", [[<C-\><C-n><cmd>ToggleTerm<CR>]], opts)
+
+			-- Navigazione rapida tra finestre (anche dal terminale)
+			vim.keymap.set("t", "<C-w>h", [[<C-\><C-n><C-w>h]], opts)
+			vim.keymap.set("t", "<C-w>j", [[<C-\><C-n><C-w>j]], opts)
+			vim.keymap.set("t", "<C-w>k", [[<C-\><C-n><C-w>k]], opts)
+			vim.keymap.set("t", "<C-w>l", [[<C-\><C-n><C-w>l]], opts)
 		end
 
-		-- Ogni volta che si apre un terminale di toggleterm, imposta i keymaps
-		vim.cmd("autocmd TermOpen term://* lua set_terminal_keymaps()")
+		-- Applica le mappature sopra solo quando si apre un terminale
+		vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 	end,
 }
