@@ -24,11 +24,16 @@ return {
 		},
 	},
 	{
-		"https://github.com/m4xshen/autoclose.nvim",
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
 		config = function()
-			require("autoclose").setup()
+			require("nvim-autopairs").setup({
+				check_ts = true, -- usa Treesitter (IMPORTANTISSIMO)
+				enable_check_bracket_line = true,
+			})
 		end,
 	},
+
 	{
 		"romgrk/barbar.nvim",
 		dependencies = {
