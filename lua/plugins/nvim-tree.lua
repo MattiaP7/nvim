@@ -12,6 +12,8 @@ return {
 				side = "left",
 			},
 			renderer = {
+
+				hidden_display = "all",
 				icons = {
 					git_placement = "before",
 					show = {
