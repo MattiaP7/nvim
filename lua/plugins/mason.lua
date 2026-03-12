@@ -35,6 +35,7 @@ return {
 					"cssls",
 					"vtsls",
 					"emmet_language_server",
+					"tailwindcss",
 				},
 			})
 		end,
@@ -47,6 +48,7 @@ return {
 				ensure_installed = {
 					-- anything but lsp
 					"stylua",
+					"prettierd",
 					"prettier",
 					"black",
 					"clang-format",

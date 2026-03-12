@@ -96,10 +96,10 @@ return {
 				clangd = {
 					cmd = {
 						"clangd",
+						"--query-driver=C:/mingw64/bin/g++*",
 						"--background-index",
-						"--function-arg-placeholders=0",
-						"-j=12",
 						"--clang-tidy",
+						"--function-arg-placeholders=0",
 					},
 					capabilities = clangd_capabilities,
 					init_options = { documentFormatting = true },
@@ -117,15 +117,17 @@ return {
 						},
 					},
 				},
-
-				intelephense = {},
-
+				intelephense = {
+					cmd = { "intelephense", "--stdio" },
+					filetypes = { "php" },
+					root_markers = { ".git", "composer.json" },
+				},
 				-------------------------------------------------
 				--          🌐 HTML / CSS / JS / EMMET
 				-------------------------------------------------
 
 				html = {
-					filetypes = { "html", "htm", "php" },
+					filetypes = { "html", "htm", "php", "javascript" },
 				},
 
 				cssls = {
@@ -139,7 +141,10 @@ return {
 				vtsls = {
 					settings = {
 						vtsls = {
-							tsserver = {},
+							tsserver = {
+								filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+								cmd = { "typescript-language-server", "--stdio" },
+							},
 						},
 					},
 					filetypes = {
@@ -150,6 +155,8 @@ return {
 						"vue",
 					},
 				},
+
+				tailwindcss = {},
 
 				emmet_language_server = {
 					filetypes = {
@@ -180,10 +187,19 @@ return {
 			--             FINESTRE CON BORDI
 			-------------------------------------------------
 
-			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-
-			vim.lsp.handlers["textDocument/signatureHelp"] =
-				vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded", focusable = false })
+			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+				border = "rounded",
+				-- max_width = 60,
+				-- max_height = 20,
+			})
+			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+				border = "rounded",
+				-- focusable = false,
+				-- relative = "cursor",
+				-- Questa riga aiuta a non mostrare 20 overload insieme
+				-- offset_x = 0,
+				-- offset_y = 1,
+			})
 		end,
 	},
 }

@@ -41,7 +41,12 @@ return {
 				},
 			},
 			filters = {
-				dotfiles = false,
+				dotfiles = false, -- Questo mostra i file che iniziano col punto
+				git_clean = false,
+				no_buffer = false,
+				custom = {},
+				exclude = {},
+				git_ignored = false, -- AGGIUNGI QUESTO: mostra i file ignorati da git (come .env)
 			},
 		})
 	end,

@@ -28,7 +28,7 @@ return {
 		event = "InsertEnter",
 		config = function()
 			require("nvim-autopairs").setup({
-				check_ts = true, -- usa Treesitter (IMPORTANTISSIMO)
+				check_ts = true,
 				enable_check_bracket_line = true,
 			})
 		end,
@@ -78,14 +78,26 @@ return {
 		"danymat/neogen",
 		version = "*",
 		config = function()
-			require("neogen").setup()
+			require("neogen").setup({
+				languages = {
+					["javascript.jsdoc"] = require("neogen.configurations.javascript"),
+					["javascriptreact.jsdoc"] = require("neogen.configurations.javascript"),
+					["typescript.jsdoc"] = require("neogen.configurations.javascript"),
+					["typescriptreact.jsdoc"] = require("neogen.configurations.javascript"),
+				},
+			})
 		end,
 	},
+
 	{
 		-- if your at the begin of a function use 'h' for folding it, use 'l' for expand it.
 		"chrisgrieser/nvim-origami",
 		event = "VeryLazy",
-		opts = {}, -- needed even when using default config
+		opts = {
+			autoFold = {
+				enabled = false,
+			},
+		}, -- needed even when using default config
 
 		-- recommended: disable vim's auto-folding
 		init = function()

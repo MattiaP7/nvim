@@ -16,12 +16,14 @@ return {
 				python = { "black" },
 				php = { "pretty-php" },
 				javascript = { "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
 				typescript = { "prettierd", "prettier", stop_after_first = true },
+				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
 			},
 
 			format_on_save = {
 				lsp_fallback = true,
-				timeout_ms = 500,
+				timeout_ms = 1000,
 			},
 		})
 	end,
