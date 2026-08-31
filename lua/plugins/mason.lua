@@ -36,7 +36,9 @@ return {
 					"vtsls",
 					"emmet_language_server",
 					"tailwindcss",
+					"neocmake",
 				},
+				automatic_installation = true,
 			})
 		end,
 	},

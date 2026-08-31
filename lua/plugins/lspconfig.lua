@@ -96,7 +96,7 @@ return {
 				clangd = {
 					cmd = {
 						"clangd",
-						"--query-driver=C:/mingw64/bin/g++*",
+						"--query-driver=D:/msys64/ucrt64/bin/g++*",
 						"--background-index",
 						"--clang-tidy",
 						"--function-arg-placeholders=0",
@@ -157,6 +157,8 @@ return {
 				},
 
 				tailwindcss = {},
+
+				neocmake = {},
 
 				emmet_language_server = {
 					filetypes = {
