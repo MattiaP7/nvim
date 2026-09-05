@@ -2,11 +2,19 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
+			-------------------------------------------------
+			--             DIAGNOSTICS & SIGNS
+			-------------------------------------------------
 			vim.diagnostic.config({
-				virtual_text = {
-					prefix = "●",
+				virtual_text = { prefix = "●" },
+				signs = {
+					text = {
+						[vim.diagnostic.severity.ERROR] = "",
+						[vim.diagnostic.severity.WARN] = "",
+						[vim.diagnostic.severity.INFO] = "",
+						[vim.diagnostic.severity.HINT] = "",
+					},
 				},
-				signs = true,
 				underline = true,
 				update_in_insert = false,
 				severity_sort = true,
@@ -20,23 +28,11 @@ return {
 				},
 			})
 
-			vim.diagnostic.config({
-				signs = {
-					text = {
-						[vim.diagnostic.severity.ERROR] = "",
-						[vim.diagnostic.severity.WARN] = "",
-						[vim.diagnostic.severity.INFO] = "",
-						[vim.diagnostic.severity.HINT] = "",
-					},
-				},
-			})
-
 			vim.diagnostic.enable()
 
 			-------------------------------------------------
-			--                 KEYMAP LSP
+			--                  KEYMAP LSP
 			-------------------------------------------------
-
 			local on_attach = function(client, bufnr)
 				local opts = { noremap = true, silent = true, buffer = bufnr }
 				vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
@@ -51,33 +47,15 @@ return {
 			-------------------------------------------------
 			--                 CAPABILITIES
 			-------------------------------------------------
-
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities.textDocument.completion.completionItem = {
-				documentationFormat = { "markdown", "plaintext" },
-				snippetSupport = true,
-				preselectSupport = true,
-				insertReplaceSupport = true,
-				labelDetailsSupport = true,
-				deprecatedSupport = true,
-				commitCharactersSupport = true,
-				tagSupport = { valueSet = { 1 } },
-				resolveSupport = {
-					properties = {
-						"documentation",
-						"detail",
-						"additionalTextEdits",
-					},
-				},
+			capabilities.textDocument.completion.completionItem.snippetSupport = true
+			capabilities.textDocument.completion.completionItem.resolveSupport = {
+				properties = { "documentation", "detail", "additionalTextEdits" },
 			}
 
-			local clangd_capabilities = vim.deepcopy(capabilities)
-			clangd_capabilities["offsetEncoding"] = "utf-8"
-
 			-------------------------------------------------
-			--              CONFIGURAZIONE SERVER
+			--             CONFIGURAZIONE SERVER
 			-------------------------------------------------
-
 			local servers = {
 				lua_ls = {
 					settings = {
@@ -96,13 +74,19 @@ return {
 				clangd = {
 					cmd = {
 						"clangd",
-						"--query-driver=D:/msys64/ucrt64/bin/g++*",
 						"--background-index",
 						"--clang-tidy",
-						"--function-arg-placeholders=0",
+						"--header-insertion=iwyu",
+						"--completion-style=detailed",
+						"--suggest-missing-includes",
+						"--query-driver=D:/msys64/ucrt64/bin/g++*",
 					},
-					capabilities = clangd_capabilities,
-					init_options = { documentFormatting = true },
+					capabilities = capabilities,
+					init_options = {
+						usePlaceholders = true,
+						completeUnimported = true,
+						clangdFileStatus = true,
+					},
 				},
 
 				pylsp = {
@@ -117,14 +101,12 @@ return {
 						},
 					},
 				},
+
 				intelephense = {
 					cmd = { "intelephense", "--stdio" },
 					filetypes = { "php" },
 					root_markers = { ".git", "composer.json" },
 				},
-				-------------------------------------------------
-				--          🌐 HTML / CSS / JS / EMMET
-				-------------------------------------------------
 
 				html = {
 					filetypes = { "html", "htm", "php", "javascript" },
@@ -157,7 +139,6 @@ return {
 				},
 
 				tailwindcss = {},
-
 				neocmake = {},
 
 				emmet_language_server = {
@@ -177,7 +158,6 @@ return {
 			-------------------------------------------------
 			--             AVVIO AUTOMATICO LSP
 			-------------------------------------------------
-
 			for name, opts in pairs(servers) do
 				opts.capabilities = opts.capabilities or capabilities
 				opts.on_attach = on_attach
@@ -188,19 +168,21 @@ return {
 			-------------------------------------------------
 			--             FINESTRE CON BORDI
 			-------------------------------------------------
-
-			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-				border = "rounded",
-				-- max_width = 60,
-				-- max_height = 20,
+			-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+			vim.lsp.handlers["textDocument/hover"] = vim.diagnostic.config({
+				virtual_text = true,
+				signs = true,
+				underline = true,
+				update_in_insert = false,
+				-- border = "rounded",
 			})
-			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-				border = "rounded",
-				-- focusable = false,
-				-- relative = "cursor",
-				-- Questa riga aiuta a non mostrare 20 overload insieme
-				-- offset_x = 0,
-				-- offset_y = 1,
+
+			vim.lsp.handlers["textDocument/signatureHelp"] = vim.diagnostic.config({
+				virtual_text = true,
+				signs = true,
+				underline = true,
+				update_in_insert = false,
+				-- border = "rounded",
 			})
 		end,
 	},

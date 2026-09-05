@@ -19,6 +19,7 @@ return {
 	},
 	{
 		"L3MON4D3/LuaSnip",
+		build = "make install_jsregexp",
 		dependencies = {
 			"saadparwaiz1/cmp_luasnip",
 			"rafamadriz/friendly-snippets",
@@ -88,30 +89,25 @@ return {
 
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
-					format = lspkind.cmp_format({
-						mode = "symbol_text",
-						maxwidth = 50,
-						ellipsis_char = "...",
-						before = function(entry, vim_item)
-							-- Mostra la sorgente
-							vim_item.menu = ({
-								nvim_lsp = "[LSP]",
-								nvim_lsp_signature_help = "[Sig]",
-								luasnip = "[Snip]",
-								buffer = "[Buf]",
-								path = "[Path]",
-							})[entry.source.name]
+					format = function(entry, vim_item)
+						-- Genera le icone tramite lspkind
+						local kind = lspkind.cmp_format({
+							mode = "symbol_text",
+							maxwidth = 50,
+							ellipsis_char = "...",
+						})(entry, vim_item)
 
-							vim_item.dup = ({
-								nvim_lsp = 0,
-								luasnip = 0,
-								buffer = 0,
-								path = 0,
-							})[entry.source.name] or 0
+						-- Applica le etichette personalizzate per le sorgenti
+						kind.menu = ({
+							nvim_lsp = "[LSP]",
+							nvim_lsp_signature_help = "[Sig]",
+							luasnip = "[Snip]",
+							buffer = "[Buf]",
+							path = "[Path]",
+						})[entry.source.name]
 
-							return vim_item
-						end,
-					}),
+						return kind
+					end,
 				},
 
 				window = {

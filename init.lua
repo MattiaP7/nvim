@@ -36,6 +36,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+	rocks = {
+		enabled = false,
+		hererocks = false,
+	},
 	spec = {
 		{ import = "plugins" },
 	},
@@ -43,3 +47,16 @@ require("lazy").setup({
 
 require("current-theme")
 -- require("terminal")
+
+vim.filetype.add({
+	extension = {
+		dox = "c.doxygen",
+	},
+	filename = {},
+	pattern = {},
+	-- Fallback mapping for compound doxygen filetypes
+	type = {
+		["c.doxygen"] = "c",
+		["cpp.doxygen"] = "cpp",
+	},
+})
