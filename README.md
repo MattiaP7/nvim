@@ -6,7 +6,8 @@ Personal Neovim setup with LSP, formatting, and development tools.
 
 * [Neovim 0.12.5+](https://github.com/neovim/neovim/releases/tag/v0.12.5)
 * [Nerd Font](https://www.nerdfonts.com/) for terminal icons
-* [fd](https://github.com/sharkdp/fd) for file finding (Telescope integration)
+* [Tree-sitter-cli](https://github.com/tree-sitter/tree-sitter/blob/master/crates/cli/README.md) is required by nvim-treesitter plugin to install parsers.
+* [fd](https://github.com/sharkdp/fd) for file finding (Telescope integration, optional)
 * [ripgrep](https://github.com/BurntSushi/ripgrep) for live grep (optional but recommended)
 * [git](https://git-scm.com/) for lazy.nvim and version control
 * Language-specific tools:
