@@ -25,7 +25,7 @@ Personal Neovim setup with LSP, formatting, and development tools.
 ### Linux/macOS
 
 ```bash
-git clone <your-repo> ~/.config/nvim
+git clone https://github.com/MattiaP7/nvim.git ~/.config/nvim
 cd ~/.config/nvim
 nvim
 ```
@@ -39,7 +39,7 @@ to install LSP servers and tools listed above.
 ### Windows (PowerShell)
 
 ```powershell
-git clone <your-repo> $ENV:USERPROFILE\AppData\Local\nvim
+git clone https://github.com/MattiaP7/nvim.git $ENV:USERPROFILE\AppData\Local\nvim
 cd $ENV:USERPROFILE\AppData\Local\nvim
 nvim
 ```
@@ -47,7 +47,7 @@ nvim
 ### Windows (Command Prompt)
 
 ```cmd
-git clone <your-repo> %USERPROFILE%\AppData\Local\nvim
+git clone https://github.com/MattiaP7/nvim.git %USERPROFILE%\AppData\Local\nvim
 cd %USERPROFILE%\AppData\Local\nvim
 nvim
 ```

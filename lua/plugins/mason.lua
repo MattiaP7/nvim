@@ -59,6 +59,15 @@ return {
 				auto_update = false,
 				run_on_start = true,
 			})
+
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "MasonToolsStartingInstall",
+				callback = function()
+					vim.schedule(function()
+						vim.cmd("Mason")
+					end)
+				end,
+			})
 		end,
 	},
 }

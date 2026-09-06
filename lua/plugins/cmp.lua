@@ -1,5 +1,4 @@
 return {
-	-- Dentro il tuo cmp.lua, nella sezione lsp_signature
 	{
 		"ray-x/lsp_signature.nvim",
 		event = "VeryLazy",
@@ -19,6 +18,7 @@ return {
 	},
 	{
 		"L3MON4D3/LuaSnip",
+		version = "v2.*",
 		build = "make install_jsregexp",
 		dependencies = {
 			"saadparwaiz1/cmp_luasnip",
@@ -81,7 +81,6 @@ return {
 
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
-					-- { name = "nvim_lsp_signature_help" },
 					{ name = "luasnip" },
 					{ name = "buffer" },
 					{ name = "path" },
@@ -89,25 +88,28 @@ return {
 
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
-					format = function(entry, vim_item)
-						-- Genera le icone tramite lspkind
-						local kind = lspkind.cmp_format({
-							mode = "symbol_text",
-							maxwidth = 50,
-							ellipsis_char = "...",
-						})(entry, vim_item)
+					format = lspkind.cmp_format({
+						mode = "symbol_text",
+						maxwidth = {
+							abbr = 50,
+							menu = 50,
+						},
+						ellipsis_char = "...",
+						show_labelDetails = true,
+						before = function(entry, vim_item)
+							-- Etichette personalizzate per le sorgenti
+							local menu_icon = {
+								nvim_lsp = "[LSP]",
+								nvim_lsp_signature_help = "[Sig]",
+								luasnip = "[Snip]",
+								buffer = "[Buf]",
+								path = "[Path]",
+							}
 
-						-- Applica le etichette personalizzate per le sorgenti
-						kind.menu = ({
-							nvim_lsp = "[LSP]",
-							nvim_lsp_signature_help = "[Sig]",
-							luasnip = "[Snip]",
-							buffer = "[Buf]",
-							path = "[Path]",
-						})[entry.source.name]
-
-						return kind
-					end,
+							vim_item.menu = menu_icon[entry.source.name] or ""
+							return vim_item
+						end,
+					}),
 				},
 
 				window = {

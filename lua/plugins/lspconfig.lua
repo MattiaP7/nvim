@@ -54,6 +54,16 @@ return {
 			}
 
 			-------------------------------------------------
+			--             HANDLERS CORRETTI
+			-------------------------------------------------
+			-- Hover handler con bordo arrotondato
+			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+
+			-- Signature help handler con bordo arrotondato
+			vim.lsp.handlers["textDocument/signatureHelp"] =
+				vim.lsp.with(vim.lsp.handlers.signatureHelp, { border = "rounded" })
+
+			-------------------------------------------------
 			--             CONFIGURAZIONE SERVER
 			-------------------------------------------------
 			local servers = {
@@ -79,9 +89,11 @@ return {
 						"--header-insertion=iwyu",
 						"--completion-style=detailed",
 						"--suggest-missing-includes",
-						"--query-driver=D:/msys64/ucrt64/bin/g++*",
+						-- IMPORTANTE: Specifica il path ESATTO di g++
+						-- Cambia questo con il tuo path reale!
+						"--query-driver=D:/msys64/ucrt64/bin/g++.exe",
 					},
-					capabilities = capabilities,
+					root_markers = { "compile_commands.json", ".git", "CMakeLists.txt" },
 					init_options = {
 						usePlaceholders = true,
 						completeUnimported = true,
@@ -103,7 +115,6 @@ return {
 				},
 
 				intelephense = {
-					cmd = { "intelephense", "--stdio" },
 					filetypes = { "php" },
 					root_markers = { ".git", "composer.json" },
 				},
@@ -120,15 +131,34 @@ return {
 					},
 				},
 
+				-- ⚠️ VTSLS - CONFIGURAZIONE CORRETTA
 				vtsls = {
 					settings = {
-						vtsls = {
-							tsserver = {
-								filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-								cmd = { "typescript-language-server", "--stdio" },
+						-- Per TypeScript
+						typescript = {
+							inlayHints = {
+								parameterNames = { enabled = "literals" },
+								parameterTypes = { enabled = true },
+								variableTypes = { enabled = true },
+								propertyDeclarationTypes = { enabled = true },
+								functionLikeReturnTypes = { enabled = true },
+								enumMemberValues = { enabled = true },
+							},
+							preferences = {
+								importModuleSpecifierPreference = "non-relative",
+							},
+						},
+						-- Per JavaScript
+						javascript = {
+							inlayHints = {
+								parameterNames = { enabled = "literals" },
+								parameterTypes = { enabled = true },
+								variableTypes = { enabled = true },
 							},
 						},
 					},
+					-- NON aggiungere 'cmd' qui - vtsls sa come trovare se stesso
+					-- Filetypes supportati
 					filetypes = {
 						"typescript",
 						"javascript",
@@ -156,33 +186,37 @@ return {
 			}
 
 			-------------------------------------------------
-			--             AVVIO AUTOMATICO LSP
+			--             AVVIO AUTOMATICO LSP (Neovim 0.11+)
 			-------------------------------------------------
-			for name, opts in pairs(servers) do
-				opts.capabilities = opts.capabilities or capabilities
-				opts.on_attach = on_attach
-				vim.lsp.config[name] = opts
-				vim.lsp.enable(name)
-			end
-
-			-------------------------------------------------
-			--             FINESTRE CON BORDI
-			-------------------------------------------------
-			-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-			vim.lsp.handlers["textDocument/hover"] = vim.diagnostic.config({
-				virtual_text = true,
-				signs = true,
-				underline = true,
-				update_in_insert = false,
-				-- border = "rounded",
+			-- Impostare configurazione di default per tutti i server
+			vim.lsp.config("*", {
+				on_attach = on_attach,
+				capabilities = capabilities,
 			})
 
-			vim.lsp.handlers["textDocument/signatureHelp"] = vim.diagnostic.config({
-				virtual_text = true,
-				signs = true,
-				underline = true,
-				update_in_insert = false,
-				-- border = "rounded",
+			-- Configurare server specifici
+			for name, opts in pairs(servers) do
+				-- Assicurati che on_attach e capabilities siano impostati
+				opts.capabilities = opts.capabilities or capabilities
+				opts.on_attach = opts.on_attach or on_attach
+
+				-- Registrare la config con vim.lsp.config
+				-- Se usi lspconfig, questo funziona come wrapper
+				vim.lsp.config[name] = opts
+			end
+
+			-- Abilitare i server
+			-- Modifica questa lista con i server che vuoi abilitare al startup
+			vim.lsp.enable({
+				"clangd",
+				"lua_ls",
+				"pylsp",
+				"intelephense",
+				"html",
+				"cssls",
+				"vtsls",
+				"tailwindcss",
+				"emmet_language_server",
 			})
 		end,
 	},
