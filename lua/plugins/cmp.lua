@@ -49,7 +49,6 @@ return {
 						luasnip.lsp_expand(args.body)
 					end,
 				},
-
 				mapping = cmp.mapping.preset.insert({
 					["<C-d>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -78,14 +77,12 @@ return {
 						end
 					end, { "i", "s" }),
 				}),
-
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "buffer" },
 					{ name = "path" },
 				}),
-
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
 					format = lspkind.cmp_format({
@@ -97,7 +94,7 @@ return {
 						ellipsis_char = "...",
 						show_labelDetails = true,
 						before = function(entry, vim_item)
-							-- Etichette personalizzate per le sorgenti
+							-- Icone per le sorgenti
 							local menu_icon = {
 								nvim_lsp = "[LSP]",
 								nvim_lsp_signature_help = "[Sig]",
@@ -105,13 +102,42 @@ return {
 								buffer = "[Buf]",
 								path = "[Path]",
 							}
-
 							vim_item.menu = menu_icon[entry.source.name] or ""
+
+							-- Icone nerd font per i tipi di completamento
+							local kind_icons = {
+								Text = "󰉿",
+								Method = "󰆧",
+								Function = "󰊕",
+								Constructor = "",
+								Field = "󰜢",
+								Variable = "󰀫",
+								Class = "󰠱",
+								Interface = "",
+								Module = "",
+								Property = "󰜢",
+								Unit = "󰑭",
+								Value = "󰎠",
+								Enum = "",
+								Keyword = "󰌋",
+								Snippet = "",
+								Color = "󰏘",
+								File = "󰈙",
+								Reference = "󰈇",
+								Folder = "󰉋",
+								EnumMember = "",
+								Constant = "󰏿",
+								Struct = "󰙅",
+								Event = "",
+								Operator = "󰆕",
+								TypeParameter = "",
+							}
+							vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind] or "", vim_item.kind)
+
 							return vim_item
 						end,
 					}),
 				},
-
 				window = {
 					completion = cmp.config.window.bordered({
 						border = "rounded",
@@ -123,6 +149,22 @@ return {
 						max_width = 80,
 						max_height = 20,
 					}),
+				},
+			})
+
+			-- Configurazione per cmdline
+			cmp.setup.cmdline(":", {
+				mapping = cmp.mapping.preset.cmdline(),
+				sources = cmp.config.sources({
+					{ name = "path" },
+					{ name = "cmdline" },
+				}),
+			})
+
+			cmp.setup.cmdline("/", {
+				mapping = cmp.mapping.preset.cmdline(),
+				sources = {
+					{ name = "buffer" },
 				},
 			})
 		end,

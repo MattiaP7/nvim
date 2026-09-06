@@ -56,12 +56,12 @@ return {
 			-------------------------------------------------
 			--             HANDLERS CORRETTI
 			-------------------------------------------------
-			-- Hover handler con bordo arrotondato
-			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-
-			-- Signature help handler con bordo arrotondato
-			vim.lsp.handlers["textDocument/signatureHelp"] =
-				vim.lsp.with(vim.lsp.handlers.signatureHelp, { border = "rounded" })
+			-- -- Hover handler con bordo arrotondato
+			-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+			--
+			-- -- Signature help handler con bordo arrotondato
+			-- vim.lsp.handlers["textDocument/signatureHelp"] =
+			-- 	vim.lsp.with(vim.lsp.handlers.signatureHelp, { border = "rounded" })
 
 			-------------------------------------------------
 			--             CONFIGURAZIONE SERVER
