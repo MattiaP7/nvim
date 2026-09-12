@@ -7,10 +7,18 @@ return -- Package name changed from `fff.nvim` to `fff`. If you installed fff.nv
 	end,
 	opts = {
 		prompt = " 󰍉 ",
-		-- debug = {
-		-- 	enabled = true,
-		-- 	show_scores = true,
-		-- },
+		grep = {
+			-- Aggiungi qui le cartelle/pattern da ignorare sempre
+			ignore = {
+				".git",
+				"build",
+				"dist",
+				"node_modules",
+				"target",
+				".next",
+				"vendor",
+			},
+		},
 	},
 	lazy = false, -- the plugin lazy-initialises itself
 	keys = {

@@ -34,8 +34,11 @@ return {
 						git = {
 							unstaged = "✗",
 							staged = "✓",
-							untracked = "★",
 							unmerged = "",
+							renamed = "➜",
+							untracked = "★",
+							deleted = "",
+							ignored = "◌",
 						},
 					},
 				},
@@ -44,7 +47,12 @@ return {
 				dotfiles = false, -- Questo mostra i file che iniziano col punto
 				git_clean = false,
 				no_buffer = false,
-				custom = {},
+				custom = {
+					".git",
+					"node_modules",
+					".cache",
+					"__cmake_systeminformation", -- Ignora le verifiche di sistema CMake
+				},
 				exclude = {},
 				git_ignored = false, -- AGGIUNGI QUESTO: mostra i file ignorati da git (come .env)
 			},

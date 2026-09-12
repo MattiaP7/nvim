@@ -35,6 +35,16 @@ return {
 	},
 
 	{
+		"nvim-telescope/telescope.nvim",
+		version = "*",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			-- optional but recommended
+			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		},
+	},
+
+	{
 		"romgrk/barbar.nvim",
 		dependencies = {
 			"lewis6991/gitsigns.nvim",
@@ -74,20 +84,6 @@ return {
 			require("lualine").setup()
 		end,
 	},
-	{
-		"danymat/neogen",
-		version = "*",
-		config = function()
-			require("neogen").setup({
-				languages = {
-					["javascript.jsdoc"] = require("neogen.configurations.javascript"),
-					["javascriptreact.jsdoc"] = require("neogen.configurations.javascript"),
-					["typescript.jsdoc"] = require("neogen.configurations.javascript"),
-					["typescriptreact.jsdoc"] = require("neogen.configurations.javascript"),
-				},
-			})
-		end,
-	},
 
 	{
 		-- if your at the begin of a function use 'h' for folding it, use 'l' for expand it.
@@ -105,6 +101,7 @@ return {
 			vim.opt.foldlevelstart = 99
 		end,
 	},
+
 	{
 		"stevearc/dressing.nvim",
 		opts = {},

@@ -1,7 +1,7 @@
 return {
 	{
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.8",
+		-- tag = "0.1.8",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{
@@ -21,6 +21,10 @@ return {
 							["<C-j>"] = "move_selection_next",
 							["<C-k>"] = "move_selection_previous",
 						},
+					},
+
+					preview = {
+						treesitter = false,
 					},
 
 					layout_config = {

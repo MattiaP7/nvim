@@ -6,6 +6,8 @@ return {
 		priority = 1000,
 	},
 
+	{ "Mofiqul/dracula.nvim" },
+
 	{
 		"folke/tokyonight.nvim",
 		lazy = false,
