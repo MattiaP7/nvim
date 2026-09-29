@@ -59,3 +59,25 @@ return {
 		})
 	end,
 }
+--
+-- return {
+-- 	"prichrd/netrw.nvim",
+-- 	opts = {},
+-- 	config = function()
+-- 		require("netrw").setup({
+-- 			-- Nasconde la barra banner iniziale di netrw per una vista più pulita
+-- 			icons = {
+-- 				symlink = "",
+-- 				directory = "",
+-- 				file = "",
+-- 			},
+-- 			use_devicons = true,
+-- 		})
+--
+-- 		vim.g.netrw_banner = 0 -- Rimuove il banner/intestazione iniziale
+-- 		vim.g.netrw_liststyle = 3 -- Imposta la vista ad albero (tree view)
+-- 		vim.g.netrw_browse_split = 4 -- Apre i file nella finestra precedente
+-- 		vim.g.netrw_altv = 1 -- Apre lo split verticalmente a destra
+-- 		vim.g.netrw_winsize = 25 -- Larghezza predefinita del pannello
+-- 	end,
+-- }

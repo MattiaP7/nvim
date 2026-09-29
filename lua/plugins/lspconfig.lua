@@ -3,6 +3,14 @@ return {
 		"neovim/nvim-lspconfig",
 		config = function()
 			-------------------------------------------------
+			--         PATH ENVIRONMENT FIX FOR CARGO
+			-------------------------------------------------
+			local cargo_bin = vim.fn.expand("~/.cargo/bin")
+			if vim.fn.isdirectory(cargo_bin) == 1 then
+				vim.env.PATH = cargo_bin .. ";" .. vim.env.PATH
+			end
+
+			-------------------------------------------------
 			--             DIAGNOSTICS & SIGNS
 			-------------------------------------------------
 			vim.diagnostic.config({
@@ -31,21 +39,25 @@ return {
 			vim.diagnostic.enable()
 
 			-------------------------------------------------
-			--                  KEYMAP LSP
+			--                 KEYMAP LSP
 			-------------------------------------------------
 			local on_attach = function(client, bufnr)
 				local opts = { noremap = true, silent = true, buffer = bufnr }
 				vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 				vim.keymap.set("n", "gD", vim.lsp.buf.implementation, opts)
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-				vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-				vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
 				vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
 				vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, opts)
+
+				-- Notazione corretta con i due punti (client:supports_method)
+				if client:supports_method("textDocument/signatureHelp") then
+					vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+					vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
+				end
 			end
 
 			-------------------------------------------------
-			--                 CAPABILITIES
+			--                CAPABILITIES
 			-------------------------------------------------
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -54,14 +66,21 @@ return {
 			}
 
 			-------------------------------------------------
-			--             HANDLERS CORRETTI
+			--              HANDLERS CUSTOM
 			-------------------------------------------------
-			-- -- Hover handler con bordo arrotondato
-			-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-			--
-			-- -- Signature help handler con bordo arrotondato
-			-- vim.lsp.handlers["textDocument/signatureHelp"] =
-			-- 	vim.lsp.with(vim.lsp.handlers.signatureHelp, { border = "rounded" })
+			-- Silenzia l'errore "No information available" per i server che non implementano signatureHelp
+			vim.lsp.handlers["textDocument/signatureHelp"] = function(err, result, ctx, config)
+				if err then
+					-- Ignora silenziosamente qualsiasi errore (incluso RequestFailed)
+					return
+				end
+				return vim.lsp.handlers.signature_help(
+					err,
+					result,
+					ctx,
+					vim.tbl_extend("force", { border = "rounded" }, config or {})
+				)
+			end
 
 			-------------------------------------------------
 			--             CONFIGURAZIONE SERVER
@@ -89,8 +108,6 @@ return {
 						"--header-insertion=iwyu",
 						"--completion-style=detailed",
 						"--suggest-missing-includes",
-						-- IMPORTANTE: Specifica il path ESATTO di g++
-						-- Cambia questo con il tuo path reale!
 						"--query-driver=D:/msys64/ucrt64/bin/g++.exe",
 					},
 					root_markers = { "compile_commands.json", ".git", "CMakeLists.txt" },
@@ -105,6 +122,9 @@ return {
 					settings = {
 						pylsp = {
 							plugins = {
+								jedi = {
+									environment = "C:/Users/7matt/AppData/Local/Programs/Python/Python313/python.exe",
+								},
 								pycodestyle = {
 									ignore = { "W391", "E305", "E501", "W503", "E704" },
 									maxLineLength = 100,
@@ -131,10 +151,8 @@ return {
 					},
 				},
 
-				-- ⚠️ VTSLS - CONFIGURAZIONE CORRETTA
 				vtsls = {
 					settings = {
-						-- Per TypeScript
 						typescript = {
 							inlayHints = {
 								parameterNames = { enabled = "literals" },
@@ -148,7 +166,6 @@ return {
 								importModuleSpecifierPreference = "non-relative",
 							},
 						},
-						-- Per JavaScript
 						javascript = {
 							inlayHints = {
 								parameterNames = { enabled = "literals" },
@@ -157,8 +174,6 @@ return {
 							},
 						},
 					},
-					-- NON aggiungere 'cmd' qui - vtsls sa come trovare se stesso
-					-- Filetypes supportati
 					filetypes = {
 						"typescript",
 						"javascript",
@@ -170,6 +185,11 @@ return {
 
 				tailwindcss = {},
 				neocmake = {},
+
+				asm_lsp = {
+					filetypes = { "asm", "vmasm", "nasm" },
+					root_markers = { ".git", ".asm-lsp.toml" },
+				},
 
 				emmet_language_server = {
 					filetypes = {
@@ -186,38 +206,20 @@ return {
 			}
 
 			-------------------------------------------------
-			--             AVVIO AUTOMATICO LSP (Neovim 0.11+)
+			--         AVVIO AUTOMATICO LSP (Neovim 0.11+)
 			-------------------------------------------------
-			-- Impostare configurazione di default per tutti i server
 			vim.lsp.config("*", {
 				on_attach = on_attach,
 				capabilities = capabilities,
 			})
 
-			-- Configurare server specifici
 			for name, opts in pairs(servers) do
-				-- Assicurati che on_attach e capabilities siano impostati
 				opts.capabilities = opts.capabilities or capabilities
 				opts.on_attach = opts.on_attach or on_attach
 
-				-- Registrare la config con vim.lsp.config
-				-- Se usi lspconfig, questo funziona come wrapper
 				vim.lsp.config[name] = opts
+				vim.lsp.enable(name)
 			end
-
-			-- Abilitare i server
-			-- Modifica questa lista con i server che vuoi abilitare al startup
-			vim.lsp.enable({
-				"clangd",
-				"lua_ls",
-				"pylsp",
-				"intelephense",
-				"html",
-				"cssls",
-				"vtsls",
-				"tailwindcss",
-				"emmet_language_server",
-			})
 		end,
 	},
 }

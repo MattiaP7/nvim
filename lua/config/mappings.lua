@@ -3,6 +3,17 @@ local mak = vim.api.nvim_set_keymap
 
 -- nvim tree
 map("n", "<C-n>", ":NvimTreeToggle<CR>", { desc = " file explorer" })
+--
+-- local function toggle_netrw()
+-- 	if vim.bo.filetype == "netrw" then
+-- 		vim.cmd("Rexplore")
+-- 	else
+-- 		vim.cmd("Lexplore")
+-- 	end
+-- end
+--
+-- -- Netrw (sostituisce NvimTree)
+-- map("n", "<C-n>", toggle_netrw, { desc = " File explorer (Netrw)" })
 
 -- Keymaps per Telescope
 -- map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "󰱼 Trova file" })

@@ -12,7 +12,10 @@ return {
 				floating_window = true,
 				floating_window_above_cur_line = true,
 				fix_pos = false,
-				always_trigger = true,
+				always_trigger = false, -- <--- CAMBIATO: non inviare chiamate ad ogni singolo tasto premuto
+
+				-- Ignora l'attivazione automatica per i file Assembly
+				exclude_filetypes = { "asm", "nasm", "vmasm" },
 			})
 		end,
 	},
