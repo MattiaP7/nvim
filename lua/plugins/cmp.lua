@@ -144,11 +144,12 @@ return {
 				window = {
 					completion = cmp.config.window.bordered({
 						border = "rounded",
-						winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+						-- winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+						winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,Search:None",
 					}),
 					documentation = cmp.config.window.bordered({
 						border = "rounded",
-						winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
+						winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
 						max_width = 80,
 						max_height = 20,
 					}),

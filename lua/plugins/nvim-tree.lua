@@ -11,8 +11,17 @@ return {
 				width = 30,
 				side = "left",
 			},
+			-- AGGIUNGI QUESTO BLOCCO PER LE LINEE DI PROFONDITÀ
 			renderer = {
-
+				indent_markers = {
+					enable = true,
+					icons = {
+						corner = "└ ",
+						edge = "│ ",
+						none = "  ",
+					},
+				},
+				group_empty = true,
 				hidden_display = "all",
 				icons = {
 					git_placement = "before",
@@ -43,41 +52,30 @@ return {
 					},
 				},
 			},
+			-- AGGIUNGI QUESTO BLOCCO PER GLI INDICATORI DI DIAGNOSTICA
+			diagnostics = {
+				enable = true, -- Abilita la visualizzazione
+				show_on_dirs = true, -- Mostra l'icona anche sulle cartelle
+				icons = {
+					hint = "",
+					info = "",
+					warning = "",
+					error = "",
+				},
+			},
 			filters = {
-				dotfiles = false, -- Questo mostra i file che iniziano col punto
+				dotfiles = false,
 				git_clean = false,
 				no_buffer = false,
 				custom = {
 					".git",
 					"node_modules",
 					".cache",
-					"__cmake_systeminformation", -- Ignora le verifiche di sistema CMake
+					"__cmake_systeminformation",
 				},
 				exclude = {},
-				git_ignored = false, -- AGGIUNGI QUESTO: mostra i file ignorati da git (come .env)
+				git_ignored = false,
 			},
 		})
 	end,
 }
---
--- return {
--- 	"prichrd/netrw.nvim",
--- 	opts = {},
--- 	config = function()
--- 		require("netrw").setup({
--- 			-- Nasconde la barra banner iniziale di netrw per una vista più pulita
--- 			icons = {
--- 				symlink = "",
--- 				directory = "",
--- 				file = "",
--- 			},
--- 			use_devicons = true,
--- 		})
---
--- 		vim.g.netrw_banner = 0 -- Rimuove il banner/intestazione iniziale
--- 		vim.g.netrw_liststyle = 3 -- Imposta la vista ad albero (tree view)
--- 		vim.g.netrw_browse_split = 4 -- Apre i file nella finestra precedente
--- 		vim.g.netrw_altv = 1 -- Apre lo split verticalmente a destra
--- 		vim.g.netrw_winsize = 25 -- Larghezza predefinita del pannello
--- 	end,
--- }

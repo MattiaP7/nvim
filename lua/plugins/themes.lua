@@ -6,6 +6,27 @@ return {
 		priority = 1000,
 	},
 
+	{ "RRethy/base16-nvim", lazy = false, priority = 1000 },
+
+	{
+		"ellisonleao/gruvbox.nvim",
+		priority = 1000,
+		-- config = true,
+		opts = {
+			terminal_colors = true,
+			transparent_mode = false,
+			dim_inactive = false,
+			overrides = {
+				NvimTreeNormal = { link = "Normal" },
+				NvimTreeNormalNC = { link = "Normal" },
+				NvimTreeEndOfBuffer = { link = "EndOfBuffer" },
+			},
+		},
+		config = function(_, opts)
+			require("gruvbox").setup(opts)
+		end,
+	},
+
 	{ "Mofiqul/dracula.nvim" },
 
 	{

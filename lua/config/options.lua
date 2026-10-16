@@ -28,3 +28,8 @@ o.signcolumn = "yes"
 o.ttimeoutlen = 0
 
 g.mapleader = " "
+o.guicursor = ""
+
+vim.api.nvim_set_hl(0, "NvimTreeNormal", { link = "Normal" })
+vim.api.nvim_set_hl(0, "NvimTreeNormalNC", { link = "NormalNC" })
+vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { link = "EndOfBuffer" })

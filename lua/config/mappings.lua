@@ -69,4 +69,4 @@ map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "󰑕 Rinomina parola" })
 map("n", "<leader>h", "<cmd>ToggleTerm direction=float <CR>", { desc = "Toggle Float Terminal" })
 
 -- neogen
-map("n", "<leader>nf", ":lua require('neogen').generate()<CR>", { noremap = true, silent = true })
+-- map("n", "<leader>nf", ":lua require('neogen').generate()<CR>", { noremap = true, silent = true })

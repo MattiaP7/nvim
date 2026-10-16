@@ -37,6 +37,7 @@ return {
 					"emmet_language_server",
 					"tailwindcss",
 					"neocmake",
+					"texlab",
 				},
 				automatic_installation = true,
 			})

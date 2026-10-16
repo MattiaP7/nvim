@@ -1,5 +1,15 @@
 return {
 	{
+		"folke/lazydev.nvim",
+		ft = "lua", -- si attiva solo nei file lua
+		opts = {
+			library = {
+				-- Carica i tipi delle API di Neovim
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
+	},
+	{
 		"neovim/nvim-lspconfig",
 		config = function()
 			-------------------------------------------------
@@ -92,9 +102,11 @@ return {
 							runtime = { version = "LuaJIT" },
 							diagnostics = { globals = { "vim" } },
 							workspace = {
-								library = vim.api.nvim_get_runtime_file("", true),
+								library = {},
+								-- library = vim.api.nvim_get_runtime_file("", true),
 								checkThirdParty = false,
 							},
+							hint = { enable = true },
 							telemetry = { enable = false },
 						},
 					},
@@ -189,6 +201,40 @@ return {
 				asm_lsp = {
 					filetypes = { "asm", "vmasm", "nasm" },
 					root_markers = { ".git", ".asm-lsp.toml" },
+				},
+
+				-- In lspconfig.lua, dentro la tabella "servers"
+				texlab = {
+					settings = {
+						texlab = {
+							-- Traduzione di "latex-workshop.latex.tools" e "recipe.default"
+							build = {
+								executable = "latexmk",
+								args = {
+									"-xelatex",
+									"-shell-escape",
+									"-synctex=1",
+									"-interaction=nonstopmode",
+									"-file-line-error",
+									"-outdir=build",
+									"%f", -- Placeholder per il file .tex corrente
+								},
+								-- Traduzione di "latex-workshop.latex.autoBuild.run"
+								onSave = true, -- Compila ad ogni salvataggio
+								forwardSearchAfter = false, -- Opzionale
+							},
+							-- Traduzione di "latex-workshop.latex.outDir" (per i log)
+							auxDirectory = "build",
+							-- Disabilita i warning rumorosi di chktex (opzionale, ma consigliato)
+							chktex = {
+								onOpenAndSave = false,
+								onEdit = false,
+							},
+						},
+					},
+					-- Aggiungi i filetypes per cui attivare il server
+					filetypes = { "tex", "bib" },
+					root_markers = { ".git", ".latexmkrc", "latexmkrc", "main.tex", "texlabroot" },
 				},
 
 				emmet_language_server = {
