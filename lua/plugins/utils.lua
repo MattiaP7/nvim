@@ -1,10 +1,9 @@
 return {
-
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
 		opts = {
-			preset = "modern", -- 'classic' | 'modern' | 'helix'
+			preset = "helix", -- 'classic' | 'modern' | 'helix'
 			delay = 500,
 			plugins = {
 				spelling = {
@@ -79,9 +78,139 @@ return {
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		event = "VeryLazy",
 		config = function()
-			require("lualine").setup()
+			local function lsp_status()
+				local clients = vim.lsp.get_clients({ bufnr = 0 })
+				if #clients == 0 then
+					return ""
+				end
+
+				local names = {}
+				for _, client in ipairs(clients) do
+					if client.name ~= "null-ls" and client.name ~= "none-ls" then
+						table.insert(names, client.name)
+					end
+				end
+
+				if #names == 0 then
+					return ""
+				end
+
+				return "󰒋 " .. table.concat(names, ", ")
+			end
+
+			require("lualine").setup({
+				options = {
+					theme = "auto",
+					globalstatus = true,
+					disabled_filetypes = {
+						statusline = { "dashboard", "alpha", "starter" },
+					},
+					component_separators = {
+						left = "│",
+						right = "│",
+					},
+					section_separators = {
+						left = "",
+						right = "",
+					},
+					icons_enabled = true,
+					always_divide_middle = true,
+					always_show_tabline = false,
+				},
+
+				sections = {
+					lualine_a = {
+						{
+							"mode",
+							fmt = function(str)
+								return str:upper()
+							end,
+						},
+					},
+
+					lualine_b = {
+						{
+							"branch",
+							icon = "",
+						},
+						{
+							"diff",
+							symbols = {
+								added = " ",
+								modified = " ",
+								removed = " ",
+							},
+						},
+						{
+							"diagnostics",
+							sources = { "nvim_diagnostic" },
+							sections = { "error", "warn", "info", "hint" },
+							symbols = {
+								error = " ",
+								warn = " ",
+								info = " ",
+								hint = "󰌵 ",
+							},
+							colored = true,
+							update_in_insert = false,
+							always_visible = false,
+						},
+					},
+
+					lualine_c = {
+						{
+							"filename",
+							path = 1,
+							symbols = {
+								modified = " ●",
+								readonly = " 󰌾",
+								unnamed = "[No Name]",
+								newfile = "  ",
+							},
+							color = { gui = "bold" },
+						},
+						{
+							lsp_status,
+							color = { gui = "italic" },
+						},
+					},
+
+					lualine_x = {
+						{
+							"encoding",
+							fmt = function(str)
+								return str:upper()
+							end,
+						},
+						"fileformat",
+						{
+							"filetype",
+							icon_only = false,
+						},
+					},
+
+					lualine_y = {
+						{
+							"progress",
+							separator = " ",
+						},
+					},
+
+					lualine_z = {
+						{
+							"location",
+							fmt = function(str)
+								return "Ln/Col " .. str
+							end,
+						},
+					},
+				},
+			})
 		end,
 	},
 

@@ -1,24 +1,7 @@
 return {
-	{
-		"ray-x/lsp_signature.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("lsp_signature").setup({
-				bind = true,
-				handler_opts = {
-					border = "rounded",
-				},
-				hint_enable = false,
-				floating_window = true,
-				floating_window_above_cur_line = true,
-				fix_pos = false,
-				always_trigger = false, -- <--- CAMBIATO: non inviare chiamate ad ogni singolo tasto premuto
-
-				-- Ignora l'attivazione automatica per i file Assembly
-				exclude_filetypes = { "asm", "nasm", "vmasm" },
-			})
-		end,
-	},
+	-------------------------------------------------
+	--                  SNIPPETS
+	-------------------------------------------------
 	{
 		"L3MON4D3/LuaSnip",
 		version = "v2.*",
@@ -28,10 +11,15 @@ return {
 			"rafamadriz/friendly-snippets",
 		},
 	},
+
+	-------------------------------------------------
+	--                 COMPLETAMENTO
+	-------------------------------------------------
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
-			"hrsh7th/cmp-nvim-lsp-signature-help",
+			-- NOTA: "hrsh7th/cmp-nvim-lsp-signature-help" rimosso per evitare
+			-- conflitti con "ray-x/lsp_signature.nvim" (che gestisce la firma)
 			"hrsh7th/cmp-cmdline",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-buffer",
@@ -43,15 +31,22 @@ return {
 			local luasnip = require("luasnip")
 			local lspkind = require("lspkind")
 
-			-- Carica snippet
+			-- Carica gli snippet in formato VSCode
 			require("luasnip.loaders.from_vscode").lazy_load()
 
 			cmp.setup({
+				-------------------------------------------------
+				--                  SNIPPET
+				-------------------------------------------------
 				snippet = {
 					expand = function(args)
 						luasnip.lsp_expand(args.body)
 					end,
 				},
+
+				-------------------------------------------------
+				--                  MAPPING
+				-------------------------------------------------
 				mapping = cmp.mapping.preset.insert({
 					["<C-d>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -80,34 +75,41 @@ return {
 						end
 					end, { "i", "s" }),
 				}),
+
+				-------------------------------------------------
+				--                 SORGENTI
+				-------------------------------------------------
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "buffer" },
 					{ name = "path" },
 				}),
+
+				-------------------------------------------------
+				--               FORMATTAZIONE
+				-------------------------------------------------
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
 					format = lspkind.cmp_format({
 						mode = "symbol_text",
 						maxwidth = {
-							abbr = 50,
-							menu = 50,
+							abbr = 45, -- Limita la larghezza del testo
+							menu = 45, -- Limita la larghezza del menu
 						},
 						ellipsis_char = "...",
 						show_labelDetails = true,
 						before = function(entry, vim_item)
-							-- Icone per le sorgenti
+							-- Etichette per identificare la sorgente
 							local menu_icon = {
 								nvim_lsp = "[LSP]",
-								nvim_lsp_signature_help = "[Sig]",
 								luasnip = "[Snip]",
 								buffer = "[Buf]",
 								path = "[Path]",
 							}
 							vim_item.menu = menu_icon[entry.source.name] or ""
 
-							-- Icone nerd font per i tipi di completamento
+							-- Icone per i tipi di dato
 							local kind_icons = {
 								Text = "󰉿",
 								Method = "󰆧",
@@ -141,10 +143,15 @@ return {
 						end,
 					}),
 				},
+
+				-------------------------------------------------
+				--                 FINESTRE
+				-------------------------------------------------
 				window = {
 					completion = cmp.config.window.bordered({
 						border = "rounded",
-						-- winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+						-- 🔥 LIMITE DI ALTEZZA (evita che il menu copra la firma)
+						max_height = 8,
 						winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,Search:None",
 					}),
 					documentation = cmp.config.window.bordered({
@@ -156,7 +163,10 @@ return {
 				},
 			})
 
-			-- Configurazione per cmdline
+			-------------------------------------------------
+			--             CMDLINE COMPLETION
+			-------------------------------------------------
+			-- Completamento per i comandi (es. :e, :w)
 			cmp.setup.cmdline(":", {
 				mapping = cmp.mapping.preset.cmdline(),
 				sources = cmp.config.sources({
@@ -165,6 +175,7 @@ return {
 				}),
 			})
 
+			-- Completamento per la ricerca (es. /parola)
 			cmp.setup.cmdline("/", {
 				mapping = cmp.mapping.preset.cmdline(),
 				sources = {
