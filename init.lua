@@ -16,8 +16,8 @@ if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
 end
 -- Per Linux/macOS, Neovim userà automaticamente la shell dell'utente ($SHELL)
 
-require("config/options")
-require("config/mappings")
+require("config.options")
+require("config.mappings")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
