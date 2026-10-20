@@ -3,6 +3,13 @@ return {
 	lazy = false,
 	build = ":TSUpdate",
 	config = function()
+		-- 1. Forza le variabili d'ambiente per l'eseguibile tree-sitter CLI
+		vim.env.CC = "gcc"
+		vim.env.CXX = "g++"
+
+		-- 2. Fallback per il sistema di installazione Lua
+		require("nvim-treesitter.install").compilers = { "gcc" }
+
 		require("nvim-treesitter").setup({
 			sync_install = false,
 			ensure_installed = {
@@ -15,6 +22,10 @@ return {
 				"vim",
 				"vimdoc",
 				"query",
+				"typescript",
+				"tsx",
+				"javascript",
+				"jsx",
 			},
 			ignore_install = {},
 			modules = {},
